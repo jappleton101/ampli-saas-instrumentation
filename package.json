@@ -2,18 +2,35 @@
   "name": "amplisaas",
   "version": "1.0.0",
   "description": "Testing all things amplitude with authentication",
-  "main": "index.js",
+  "main": ".src/server/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "NODE_ENV=development webpack serve --open & nodemon server/index.js",
+    "build": "webpack",
+    "start": "NODE_ENV=production webpack & node server/index.js"
   },
   "author": "James Appleton",
   "license": "ISC",
   "dependencies": {
+    "@babel/preset-env": "^7.27.2",
+    "@babel/preset-react": "^7.27.1",
+    "@mui/icons-material": "^7.2.0",
+    "@mui/material": "^7.2.0",
+    "@tanstack/react-query": "^5.81.5",
+    "axios": "^1.10.0",
+    "babel-loader": "^10.0.0",
+    "bcrypt": "^6.0.0",
     "connect-redis": "^9.0.0",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "express-session": "^1.18.1",
+    "html-webpack-plugin": "^5.6.3",
+    "nodemon": "^3.1.10",
     "pg": "^8.16.2",
-    "redis": "^5.5.6"
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "redis": "^5.5.6",
+    "webpack": "^5.99.9",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.2"
   }
 }

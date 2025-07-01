@@ -1,12 +1,11 @@
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
-const pg = require('pg');
 const redis = require('redis');
 const connectRedis = require('connect-redis');
 require('dotenv').config();
 
-const db = new pg.Client(process.env.DATABASE_URL);
+
 const redisClient = redis.createClient({ url: process.env.REDIS_URL });
 
 const app = express();
@@ -29,7 +28,6 @@ app.use(
   })
 );
 
-db.connect();
 redisClient.connect();
 
 app.get('/', (req, res) => {
