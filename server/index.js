@@ -3,6 +3,7 @@ const path = require('path');
 const session = require('express-session');
 const redis = require('redis');
 const connectRedis = require('connect-redis');
+const userRouter = require('./routes/userRoute.js')
 require('dotenv').config();
 
 
@@ -28,13 +29,17 @@ app.use(
   })
 );
 
+app.use(express.json())
+
 redisClient.connect();
+
+app.use('/users', userRouter);
 
 app.get('/', (req, res) => {
   return res.status(200).sendFile(path.join(__dirname, '../client/index.html'));
 });
 
-app.use('/', (err, req, res, next) => {
+app.use('/', (err, req, res) => {
   console.log(err);
   const defaultError = {
     log: 'Express error handler caught unknown error',
