@@ -1,71 +1,85 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import MenuItem from '@mui/material/MenuItem';
-import ComputerIcon from '@mui/icons-material/Computer';
-import LoginModal from './LoginModal.jsx';
-import SignupModal from './SignUpModal.jsx';
-import axios from 'axios';
+import * as React from "react";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Menu from "@mui/material/Menu";
+import MenuIcon from "@mui/icons-material/Menu";
+import Container from "@mui/material/Container";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import MenuItem from "@mui/material/MenuItem";
+import ComputerIcon from "@mui/icons-material/Computer";
+import LoginModal from "./LoginModal.jsx";
+import SignupModal from "./SignUpModal.jsx";
+import axios from "axios";
 
-const pagesObject = [
-  { name: 'Projects', id: 'project-browsing-view' },
-  { name: 'Planning', id: 'project-planning-view' },
-];
+let pagesObject;
 
-const loggedIn = ['Logout'];
-const loggedOut = ['Login', 'Sign Up'];
+const loggedIn = ["Logout"];
+const loggedOut = ["Login", "Sign Up"];
 
 function ResponsiveAppBar({ setViewHandler, isLoggedIn, handleSessionAction }) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const [loginError, setLoginError] = React.useState('');
-  const [signupError, setSignupError] = React.useState('');
+  const [loginError, setLoginError] = React.useState("");
+  const [signupError, setSignupError] = React.useState("");
+
+  if (!isLoggedIn) {
+    pagesObject = [
+      { name: "Projects", id: "project-browsing-view" },
+      { name: "Planning", id: "project-planning-view" },
+    ];
+  } else {
+    pagesObject = [
+      { name: "Projects", id: "project-browsing-view" },
+      { name: "Planning", id: "project-planning-view" },
+      { name: "Team", id: "team-view" },
+    ];
+  }
 
   const handleModalButtonClick = (
     username,
     password,
     confirmPassword,
-    action
+    action,
+    firstName,
+    lastName
   ) => {
-    if (action === 'login') {
+    if (action === "login") {
       tryLogin(username, password);
     }
 
-    if (action === 'create-user') {
+    if (action === "create-user") {
       if (password !== confirmPassword) {
-        setSignupError('Passwords must match');
+        setSignupError("Passwords must match");
       } else {
-        tryRegister(username, password);
+        tryRegister(username, password, firstName, lastName);
       }
     }
   };
 
   async function tryLogin(username, password) {
     try {
-      const response = await axios.post('/users/login', {
+      const response = await axios.post("/users/login", {
         username: username,
         password: password,
       });
-      console.log(response.data);
-      handleSessionAction('login');
+      handleSessionAction("login");
     } catch (error) {
       setLoginError(error.response.data.err);
     }
   }
 
-  async function tryRegister(username, password) {
+  async function tryRegister(username, password, firstName, lastName) {
     try {
-      const response = await axios.post('/users/register', {
+      console.log("Registering");
+      const response = await axios.post("/users/register", {
         username: username,
         password: password,
+        firstName: firstName,
+        lastName: lastName,
       });
     } catch (error) {
       setSignupError(error.response.data.err);
@@ -89,94 +103,90 @@ function ResponsiveAppBar({ setViewHandler, isLoggedIn, handleSessionAction }) {
   };
 
   return (
-    <AppBar position='static'>
-      <Container maxWidth='xl'>
+    <AppBar position="static">
+      <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <ComputerIcon
-            sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }}
-          />
+          <ComputerIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <Typography
-            variant='h6'
+            variant="h6"
             noWrap
-            component='a'
-            href='#app-bar-with-responsive-menu'
+            component="a"
+            href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
+              display: { xs: "none", md: "flex" },
+              fontFamily: "monospace",
               fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
             }}
           >
             AmpliSaas
           </Typography>
 
-          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
-              size='large'
-              aria-label='account of current user'
-              aria-controls='menu-appbar'
-              aria-haspopup='true'
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              color='inherit'
+              color="inherit"
             >
               <MenuIcon />
             </IconButton>
             <Menu
-              id='menu-appbar'
+              id="menu-appbar"
               anchorEl={anchorElNav}
               anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'left',
+                vertical: "bottom",
+                horizontal: "left",
               }}
               keepMounted
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'left',
+                vertical: "top",
+                horizontal: "left",
               }}
               open={Boolean(anchorElNav)}
               onClose={handleCloseNavMenu}
-              sx={{ display: { xs: 'block', md: 'none' } }}
+              sx={{ display: { xs: "block", md: "none" } }}
             >
               {pagesObject.map((page) => (
                 <MenuItem key={page.id} onClick={setViewHandler}>
-                  <Typography sx={{ textAlign: 'center' }} id={page.id}>
+                  <Typography sx={{ textAlign: "center" }} id={page.id}>
                     {page.name}
                   </Typography>
                 </MenuItem>
               ))}
             </Menu>
           </Box>
-          <ComputerIcon
-            sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }}
-          />
+          <ComputerIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Typography
-            variant='h5'
+            variant="h5"
             noWrap
-            component='a'
-            href='#app-bar-with-responsive-menu'
+            component="a"
+            href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
-              display: { xs: 'flex', md: 'none' },
+              display: { xs: "flex", md: "none" },
               flexGrow: 1,
-              fontFamily: 'monospace',
+              fontFamily: "monospace",
               fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
             }}
           >
             AmpliSaas
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pagesObject.map((page) => (
               <Button
                 key={page.id}
                 id={page.id}
                 onClick={setViewHandler}
-                sx={{ my: 2, color: 'white', display: 'block' }}
+                sx={{ my: 2, color: "white", display: "block" }}
               >
                 {page.name}
               </Button>
@@ -187,17 +197,17 @@ function ResponsiveAppBar({ setViewHandler, isLoggedIn, handleSessionAction }) {
               <Avatar />
             </IconButton>
             <Menu
-              sx={{ mt: '45px' }}
-              id='menu-appbar'
+              sx={{ mt: "45px" }}
+              id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right",
               }}
               keepMounted
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right",
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
@@ -206,8 +216,8 @@ function ResponsiveAppBar({ setViewHandler, isLoggedIn, handleSessionAction }) {
                 loggedIn.map((setting) => (
                   <MenuItem key={setting} onClick={handleCloseUserMenu}>
                     <Typography
-                      sx={{ textAlign: 'center' }}
-                      onClick={() => handleSessionAction('logout')}
+                      sx={{ textAlign: "center" }}
+                      onClick={() => handleSessionAction("logout")}
                     >
                       {setting}
                     </Typography>
@@ -216,14 +226,14 @@ function ResponsiveAppBar({ setViewHandler, isLoggedIn, handleSessionAction }) {
               {!isLoggedIn &&
                 loggedOut.map((setting) => (
                   <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography sx={{ textAlign: 'center' }}></Typography>
-                    {setting === 'Login' && (
+                    <Typography sx={{ textAlign: "center" }}></Typography>
+                    {setting === "Login" && (
                       <LoginModal
                         loginError={loginError}
                         handleModalButtonClick={handleModalButtonClick}
                       />
                     )}
-                    {setting === 'Sign Up' && (
+                    {setting === "Sign Up" && (
                       <SignupModal
                         signupError={signupError}
                         handleModalButtonClick={handleModalButtonClick}

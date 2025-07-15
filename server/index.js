@@ -39,7 +39,7 @@ app.get('/', (req, res) => {
   return res.status(200).sendFile(path.join(__dirname, '../client/index.html'));
 });
 
-app.use('/', (err, req, res) => {
+app.use('/', (err, req, res, next) => {
   console.log(err);
   const defaultError = {
     log: 'Express error handler caught unknown error',
@@ -48,7 +48,7 @@ app.use('/', (err, req, res) => {
   };
   const errorObject = Object.assign({}, defaultError, err);
   return res.status(errorObject.status).json(errorObject.message);
-});
+})
 
 app.listen(3000, () => {
   console.log('App listening on port 3000');

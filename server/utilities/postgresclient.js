@@ -1,7 +1,8 @@
-const dotenv = require('dotenv').config();
+require('dotenv').config();
 const { Pool } = require('pg');
 
 const pool = new Pool({connectionString: process.env.DATABASE_URL});
+pool.on('connect', () => console.log("connected to postgres DB"));
 
 module.exports = pool;
 

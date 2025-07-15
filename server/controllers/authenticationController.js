@@ -1,42 +1,22 @@
 const bcrypt = require('bcrypt');
 const pool = require('../utilities/postgresclient')
-// const models = require('../models/userModel'); Revisit if we want to do validation
 const authenticationController = {};
 
 authenticationController.loginUser = async (req, res, next) => {
   try {
     console.log('Login User')
-    res.locals = { message: "user logged in" };
-    // const user = await models.Users.find(
-    //   { username: req.body.username },
-    //   null,
-    //   {}
-    // );
+    console.log(req.body.username)
 
-    // if (user.length === 0) {
-    //   return next({
-    //     message: {
-    //       err: 'Incorrect username/password combination.',
-    //     },
-    //     status: 401,
-    //   });
-    // }
+    const query = `SELECT * FROM users WHERE (email = $1);`;
 
-    // const passwordMatch = await bcrypt.compare(
-    //   req.body.password,
-    //   user[0].password
-    // );
+    const values = [req.body.username];
 
-    // if (!passwordMatch) {
-    //   return next({
-    //     message: {
-    //       err: 'Incorrect username/password combination.',
-    //     },
-    //     status: 401,
-    //   });
-    // }
+    const selectQuery = await pool.query(query, values);
+    console.log(selectQuery.rows);
 
-    // res.locals.userId = user[0]._id;
+    const query2 = `SELECT * FROM tasks;`;
+    const selectQuery2 = await pool.query(query2);
+    console.log(selectQuery2.rows);
 
     return next();
   } catch (e) {
@@ -51,39 +31,26 @@ authenticationController.loginUser = async (req, res, next) => {
 authenticationController.createNewUser = async (req, res, next) => {
   try {
     console.log("Create User")
-    res.locals = { message: "user created" };
-    // const user = await models.Users.find(
-    //   { username: req.body.username },
-    //   null,
-    //   {}
-    // );
+    console.log(req.body);
 
-    // if (user.length > 0) {
-    //   return next({
-    //     message: {
-    //       err: 'User already exists',
-    //     },
-    //     status: 400,
-    //   });
-    // }
+    const query = `INSERT INTO users (first_name, last_name, email)
+      VALUES ($1, $2, $3)
+      RETURNING *;`;
 
-    // const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const { firstName, lastName, username } = req.body
 
-    // const newUser = await models.Users.create({
-    //   username: req.body.username,
-    //   password: hashedPassword,
-    // });
+    const values = [firstName, lastName, username];
+    const insertQuery = await pool.query(query, values);
+    console.log(insertQuery);
 
-    // res.locals.userId = newUser._id;
-
-    // res.locals.message = 'User successfully created';
     return next();
   } catch (e) {
-    console.log(e);
+    console.log(e.message);
     return next({
       message: {
-        err: e,
+        err: e.message,
       },
+      status: 400
     });
   }
 };

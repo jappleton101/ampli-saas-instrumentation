@@ -1,19 +1,19 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
-import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
+import TextField from "@mui/material/TextField";
+import Stack from "@mui/material/Stack";
 
 const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
+  bgcolor: "background.paper",
+  border: "2px solid #000",
   boxShadow: 24,
   p: 4,
 };
@@ -22,9 +22,11 @@ export default function SignupModal({ handleModalButtonClick, signupError }) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [username, setUsername] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [confirmPassword, setConfirmPassword] = React.useState('');
+  const [username, setUsername] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [confirmPassword, setConfirmPassword] = React.useState("");
+  const [firstName, setFirstName] = React.useState("");
+  const [lastName, setLastName] = React.useState("");
 
   return (
     <div>
@@ -32,62 +34,75 @@ export default function SignupModal({ handleModalButtonClick, signupError }) {
       <Modal
         open={open}
         onClose={handleClose}
-        aria-labelledby='modal-modal-title'
-        aria-describedby='modal-modal-description'
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id='modal-modal-title' variant='h6' component='h2'>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
             Create Account
           </Typography>
-          <Typography variant='body1'>
-            Create an account to save your favorite rides.
+          <Typography variant="body1">
+            Create an account to save your progress.
           </Typography>
           <br />
           <TextField
-            id='outlined'
-            label='Username'
-            placeholder='email@example.com'
+            id="outlined"
+            label="Username"
+            placeholder="email@example.com"
             onChange={(e) => setUsername(e.target.value)}
             autoFocus
             fullWidth
           />
           <br />
+          <TextField
+            id="outlined"
+            label="First Name"
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+          <TextField
+            id="outlined"
+            label="Last Name"
+            sx={{ ml: 1 }}
+            onChange={(e) => setLastName(e.target.value)}
+          />
           <br />
           <TextField
-            id='outlined'
-            label='Password'
-            type='password'
+            id="outlined"
+            label="Password"
+            type="password"
             onChange={(e) => setPassword(e.target.value)}
           />
           <TextField
-            id='outlined'
-            label='Confirm Password'
-            type='password'
+            id="outlined"
+            label="Confirm Password"
+            type="password"
             sx={{ ml: 1 }}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
           <br />
           {signupError && (
-            <Typography variant='body2' color='red'>
+            <Typography variant="body2" color="red">
               {signupError}
             </Typography>
           )}
           <br />
-          <Stack spacing={2} direction='row'>
+          <Stack spacing={2} direction="row">
             <Button
-              variant='contained'
+              variant="contained"
               onClick={() =>
                 handleModalButtonClick(
                   username,
                   password,
                   confirmPassword,
-                  'create-user'
+                  "create-user",
+                  firstName,
+                  lastName
                 )
               }
             >
               Create Account
             </Button>
-            <Button variant='contained' onClick={handleClose} color='error'>
+            <Button variant="contained" onClick={handleClose} color="error">
               Cancel
             </Button>
           </Stack>
