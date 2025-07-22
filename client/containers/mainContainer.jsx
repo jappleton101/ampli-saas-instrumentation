@@ -2,7 +2,7 @@ import * as React from "react";
 import ResponsiveAppBar from "../components/NavBar.jsx";
 import ToDoCard from "../components/ToDoList.jsx";
 import { useState, useEffect } from "react";
-// import axios from 'axios';
+import axios from "axios";
 
 function MainContainer() {
   const [view, setView] = useState("");
@@ -10,7 +10,7 @@ function MainContainer() {
 
   async function handleSessionAction(action) {
     if (action === "logout") {
-      // const response = await axios.post('/users/logout');
+      const response = await axios.post("/users/logout");
       setIsLoggedIn(false);
       setView("");
     }
@@ -26,20 +26,21 @@ function MainContainer() {
 
   async function getSession() {
     try {
-      // const response = await axios.get('/users/session');
-      // console.log(response);
-      return;
-      // eslint-disable-next-line no-unreachable
+      const response = await axios.get("/users/session");
+      return response;
     } catch (error) {
       console.error(error);
       alert("Error validating user session. Please log in again.");
     }
   }
 
+  async function getUserTasks() {}
+
   useEffect(() => {
     getSession().then((data) => {
-      console.log(data);
-      // setIsLoggedIn(session.data.sessionValid);
+      if (data && data.data.sessionData) {
+        setIsLoggedIn(true);
+      }
     });
   }, [isLoggedIn]);
 
@@ -53,6 +54,7 @@ function MainContainer() {
         handleSessionAction={handleSessionAction}
       />
       <div id="main-container">
+        <br />
         <ToDoCard />
       </div>
     </>

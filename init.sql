@@ -12,7 +12,6 @@ CREATE TABLE users (
     uuid UUID NOT NULL DEFAULT gen_random_uuid(),
     first_name VARCHAR(100) NOT NULL,
     last_name VARCHAR(100) NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL
 );
 
 INSERT INTO users (first_name, last_name, email)
@@ -31,6 +30,19 @@ CREATE TABLE teams (
 
 INSERT INTO teams (team_name, team_leader)
 VALUES ('Amplitude', 1);
+
+ALTER TABLE users
+ADD COLUMN team_id INTEGER,
+ADD CONSTRAINT fk_user_team
+    FOREIGN KEY (team_id)
+    REFERENCES teams(team_id)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE;
+
+UPDATE users
+SET team_id = 1
+WHERE user_id = 1;
+
 
 CREATE TABLE user_teams (
     user_id INTEGER NOT NULL,

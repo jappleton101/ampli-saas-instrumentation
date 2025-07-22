@@ -2,14 +2,15 @@ const sessionController = {};
 
 sessionController.createNewSession = async (req, res, next) => {
   try {
-    const sessionData = { userId: res.locals.userId };
+    const sessionData = { userId: res.locals.userId, userUuid: res.locals.userUuid };
 
     req.session.regenerate((err) => {
       if (err) console.log(err);
-      req.session.sessionData = sessionData;
       return next();
     });
-    res.locals.sessionId = req.sessionID;
+
+    req.session.sessionData = sessionData;
+    return next();
   } catch (e) {
     console.log(e);
     return next({ err: e });
@@ -18,13 +19,10 @@ sessionController.createNewSession = async (req, res, next) => {
 
 sessionController.checkSession = async (req, res, next) => {
   try {
-    if (!req.session.sessionData) {
-      res.locals.sessionValid = false;
+    if (!req.session) {
       return next();
     }
-
-    res.locals.sessionValid = true;
-
+    res.locals.sessionData = req.session.sessionData;
     return next();
   } catch (e) {
     console.log(e);
@@ -37,6 +35,7 @@ sessionController.deleteSession = async (req, res, next) => {
     req.session.destroy((err) => {
       if (err) console.log(err);
     });
+    delete res.locals.sessionData
     return next();
   } catch (e) {
     console.log(e);

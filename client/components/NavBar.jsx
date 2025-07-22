@@ -28,14 +28,15 @@ function ResponsiveAppBar({ setViewHandler, isLoggedIn, handleSessionAction }) {
 
   if (!isLoggedIn) {
     pagesObject = [
-      { name: "Projects", id: "project-browsing-view" },
-      { name: "Planning", id: "project-planning-view" },
+      { name: "Tasks", id: "tasks-view" },
+      { name: "Teams", id: "teams-view" },
     ];
   } else {
     pagesObject = [
-      { name: "Projects", id: "project-browsing-view" },
-      { name: "Planning", id: "project-planning-view" },
-      { name: "Team", id: "team-view" },
+      { name: "Tasks", id: "tasks-view" },
+      { name: "My Tasks", id: "my-tasks-view" },
+      { name: "Team Tasks", id: "team-tasks-view" },
+      { name: "Teams", id: "teams-view" },
     ];
   }
 
@@ -66,6 +67,7 @@ function ResponsiveAppBar({ setViewHandler, isLoggedIn, handleSessionAction }) {
         username: username,
         password: password,
       });
+      console.log("try login response", response);
       handleSessionAction("login");
     } catch (error) {
       setLoginError(error.response.data.err);
@@ -74,7 +76,6 @@ function ResponsiveAppBar({ setViewHandler, isLoggedIn, handleSessionAction }) {
 
   async function tryRegister(username, password, firstName, lastName) {
     try {
-      console.log("Registering");
       const response = await axios.post("/users/register", {
         username: username,
         password: password,
