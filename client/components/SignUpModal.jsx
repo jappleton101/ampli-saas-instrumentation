@@ -60,18 +60,6 @@ export default function SignupModal({
           <br />
           <TextField
             id="outlined"
-            label="First Name"
-            onChange={(e) => setFirstName(e.target.value)}
-          />
-          <TextField
-            id="outlined"
-            label="Last Name"
-            sx={{ ml: 1 }}
-            onChange={(e) => setLastName(e.target.value)}
-          />
-          <br />
-          <TextField
-            id="outlined"
             label="Password"
             type="password"
             onChange={(e) => setPassword(e.target.value)}
