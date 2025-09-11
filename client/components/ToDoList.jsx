@@ -4,6 +4,10 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 
 function ToDoCard({ taskTitle, taskOwner, taskDescription, taskStatus }) {
+  const handleClick = function (clickType) {
+    analytics.track(clickType);
+  };
+
   return (
     <Card>
       <CardContent>
@@ -11,15 +15,15 @@ function ToDoCard({ taskTitle, taskOwner, taskDescription, taskStatus }) {
           Task
         </Typography>
         <Typography variant="h5" component="div">
-          Complete Mock Presentation
+          Submit Timesheet
         </Typography>
         <Typography sx={{ color: "text.secondary", mb: 1.5 }}>
-          Motley fool data review
+          James Appleton
         </Typography>
         <Typography variant="body2">Due date: July 10, 2025</Typography>
         <br />
-        <button onClick={() => console.log("Completed Event")}>Complete</button>
-        <button onClick={() => console.log("Deleted Event")}>Delete</button>
+        <button onClick={() => handleClick("Task Completed")}>Complete</button>
+        <button onClick={() => handleClick("Task Deleted")}>Delete</button>
       </CardContent>
     </Card>
   );

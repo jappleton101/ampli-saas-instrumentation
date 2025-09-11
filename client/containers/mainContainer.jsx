@@ -7,6 +7,7 @@ import axios from "axios";
 function MainContainer() {
   const [view, setView] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  analytics.page("Home Page"); // Segment Page Viewed Event
 
   async function handleSessionAction(action) {
     if (action === "logout") {

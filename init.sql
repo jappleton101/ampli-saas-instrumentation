@@ -16,7 +16,9 @@ CREATE TABLE users (
 
 INSERT INTO users (first_name, last_name, email)
 VALUES ('James', 'Appleton', 'james.appleton@amplitude.com');
+-- Replace with your info if desired
 
+-- determine if we can remove
 CREATE TABLE teams (
     team_id SERIAL PRIMARY KEY,
     team_name VARCHAR(100) UNIQUE NOT NULL,

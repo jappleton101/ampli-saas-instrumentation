@@ -25,6 +25,7 @@ function ResponsiveAppBar({ setViewHandler, isLoggedIn, handleSessionAction }) {
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [loginError, setLoginError] = React.useState("");
   const [signupError, setSignupError] = React.useState("");
+  const [signupSuccess, setSignupSuccess] = React.useState("");
 
   if (!isLoggedIn) {
     pagesObject = [
@@ -82,12 +83,14 @@ function ResponsiveAppBar({ setViewHandler, isLoggedIn, handleSessionAction }) {
         firstName: firstName,
         lastName: lastName,
       });
+      setSignupSuccess("User Successfully Created");
     } catch (error) {
       setSignupError(error.response.data.err);
     }
   }
 
   const handleOpenNavMenu = (event) => {
+    analytics.track("Click Menu");
     setAnchorElNav(event.currentTarget);
   };
 
@@ -237,6 +240,7 @@ function ResponsiveAppBar({ setViewHandler, isLoggedIn, handleSessionAction }) {
                     {setting === "Sign Up" && (
                       <SignupModal
                         signupError={signupError}
+                        signupSuccess={signupSuccess}
                         handleModalButtonClick={handleModalButtonClick}
                       />
                     )}

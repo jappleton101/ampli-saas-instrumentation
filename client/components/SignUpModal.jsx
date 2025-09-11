@@ -18,7 +18,11 @@ const style = {
   p: 4,
 };
 
-export default function SignupModal({ handleModalButtonClick, signupError }) {
+export default function SignupModal({
+  handleModalButtonClick,
+  signupError,
+  signupSuccess,
+}) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -83,6 +87,11 @@ export default function SignupModal({ handleModalButtonClick, signupError }) {
           {signupError && (
             <Typography variant="body2" color="red">
               {signupError}
+            </Typography>
+          )}
+          {signupSuccess && (
+            <Typography variant="body2" color="green">
+              {signupSuccess}
             </Typography>
           )}
           <br />
