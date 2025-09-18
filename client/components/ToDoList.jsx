@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 
 function ToDoCard({ taskTitle, taskOwner, taskDescription, taskStatus }) {
   const handleClick = function (clickType) {
-    analytics.track(clickType);
+    // analytics.track(clickType);
   };
 
   return (
@@ -22,8 +22,17 @@ function ToDoCard({ taskTitle, taskOwner, taskDescription, taskStatus }) {
         </Typography>
         <Typography variant="body2">Due date: July 10, 2025</Typography>
         <br />
-        <button onClick={() => handleClick("Task Completed")}>Complete</button>
-        <button onClick={() => handleClick("Task Deleted")}>Delete</button>
+        <div>
+          <button
+            id="complete-button"
+            onClick={() => handleClick("Task Completed")}
+          >
+            Complete
+          </button>
+        </div>
+        <button id="delete-button" onClick={() => handleClick("Task Deleted")}>
+          Delete
+        </button>
       </CardContent>
     </Card>
   );
