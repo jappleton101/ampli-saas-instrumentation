@@ -2,18 +2,39 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Ampli-SaaS</title>
+    <meta name="app:environment" content="production" />
+    <meta name="app:platformName" content="webassign" />
+    <meta name="app:businessUnit" content="School" />
+    <!-- <script>
+      (function(e,t){
+        var n=e.amplitude||{_q:[],_iq:{}};
+        var r=t.createElement("script");
+        r.type="text/javascript"; r.async=true;
+        r.src="https://cdn.amplitude.com/libs/analytics-browser-2.33.5-min.js.gz";
+        r.onload=function(){ if(e.amplitude && e.amplitude.runQueuedFunctions){ e.amplitude.runQueuedFunctions(); } };
+        var s=t.getElementsByTagName("script")[0]; s.parentNode.insertBefore(r,s);
+        function a(e,t){ e.prototype[t]=function(){ this._q.push([t].concat(Array.prototype.slice.call(arguments,0))); return this; }; }
+        var i=function(){ this._q=[]; return this; };
+        var o=["add","append","clearAll","prepend","set","setOnce","unset"];
+        for(var u=0;u<o.length;u++){ a(i,o[u]); }
+        n.Identify=i; e.amplitude=n;
+      })(window,document);
+    </script> -->
+    <title>Ampli-saas</title>
   </head>
   <body>
     <div id="root"></div>
     <script src="index.js"></script>
-    <script src="https://cdn.amplitude.com/libs/analytics-browser-2.24.0-min.js.gz"></script>
+    <script src="https://cdn.amplitude.com/libs/analytics-browser-2.23.7-min.js.gz"></script> 
+    <script src="https://cdn.amplitude.com/script/511911c0366c51e10cc03a5264a3808b.engagement.js"></script>
+    <script>amplitude.add(window.engagement.plugin())</script>
     <script src="https://cdn.amplitude.com/libs/plugin-session-replay-browser-1.19.3-min.js.gz"></script>
     <script>
         window.amplitude.add(window.sessionReplay.plugin());
-    </script>
+    </script> 
     <script>
-      amplitude.init('511911c0366c51e10cc03a5264a3808b', {
+      const AMPLITUDE_API_KEY = "511911c0366c51e10cc03a5264a3808b"; // replace
+      amplitude.init(AMPLITUDE_API_KEY, {
           autocapture: {
           attribution: false, 
           pageViews: true, 
@@ -21,9 +42,49 @@
           formInteractions: true,
           fileDownloads: true,
           elementInteractions: true,
-          networkTracking: true
+          networkTracking: false
         },
       });
     </script>
+    <!-- <script>
+      // --- REQUIRED: your Amplitude API key ---
+      const AMPLITUDE_API_KEY = "511911c0366c51e10cc03a5264a3808b"; // replace
+
+      // Helper to read <meta> values
+      function meta(name, fallback = null) {
+        const el = document.querySelector(`meta[name="${name}"]`);
+        return el ? el.getAttribute("content") : fallback;
+      }
+
+      // Initialize the SDK (lean defaults on an error page)
+      amplitude.init(AMPLITUDE_API_KEY, {
+        autocapture: {
+          elementInteractions: true,
+          networkTracking: false
+        }
+      });
+
+      // Build event properties (minimum + useful context)
+      const eventProps = {
+        // REQUIRED (your spec)
+        host: location.host,
+        environment: meta("app:environment", "production"),
+        platformName: meta("app:platformName", "webassign"),
+        businessUnit: meta("app:businessUnit", "School"),
+
+        // Helpful context
+        errorType: "page_not_found",
+        statusCode: 404,
+        path: location.pathname,
+        query: location.search || null,
+        referrer: document.referrer || null,
+        userAgent: navigator.userAgent,
+        occurredAt: new Date().toISOString()
+      };
+
+      // Send the event (use exactly the same name everywhere)
+      amplitude.track("Error Occurred", eventProps);
+    </script> -->
+
   </body>
 </html>
