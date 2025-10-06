@@ -64,7 +64,7 @@ function ResponsiveAppBar({ setViewHandler, isLoggedIn, handleSessionAction }) {
 
   async function tryLogin(username, password) {
     try {
-      const response = await axios.post("/users/login", {
+      const response = await axios.post("http://localhost:8080/users/login", {
         username: username,
         password: password,
       });
