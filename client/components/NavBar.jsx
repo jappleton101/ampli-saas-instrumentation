@@ -90,7 +90,6 @@ function ResponsiveAppBar({ setViewHandler, isLoggedIn, handleSessionAction }) {
   }
 
   const handleOpenNavMenu = (event) => {
-    analytics.track("Click Menu");
     setAnchorElNav(event.currentTarget);
   };
 
