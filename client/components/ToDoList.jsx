@@ -25,9 +25,6 @@ function ToDoCard({ taskTitle, taskOwner, taskDescription, taskStatus }) {
         <button data-amp-mask onClick={() => handleClick("View Profile")}>
           Personal Information
         </button>
-        <div data-amp-mask-attributes="customername">
-          <span customername="John D">Account</span>
-        </div>
         <button onClick={() => handleClick("Task Deleted")}>Delete</button>
       </CardContent>
     </Card>
