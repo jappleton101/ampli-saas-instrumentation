@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 
 function ToDoCard({ taskTitle, taskOwner, taskDescription, taskStatus }) {
   const handleClick = function (clickType) {
-    amplitude.track(clickType);
+    analytics.track(clickType);
   };
 
   return (

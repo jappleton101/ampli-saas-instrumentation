@@ -4,9 +4,10 @@ import ToDoCard from "../components/ToDoList.jsx";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { AmplitudeBrowser } from "@amplitude/analytics-browser";
-import * as engagement from "@amplitude/engagement-browser";
+import { plugin as engagementPlugin } from "@amplitude/engagement-browser";
 
 window.amplitude = new AmplitudeBrowser();
+amplitude.add(engagementPlugin());
 
 await amplitude.init("511911c0366c51e10cc03a5264a3808b", {
   defaultTracking: false,
@@ -16,7 +17,8 @@ await amplitude.init("511911c0366c51e10cc03a5264a3808b", {
     formInteractions: false,
     sessions: false,
     fileDownloads: false,
-    // elementInteractions: {
+    elementInteractions: true,
+    // {
     //   cssSelectorAllowlist: [
     //     "a",
     //     "button",
@@ -37,38 +39,27 @@ await amplitude.init("511911c0366c51e10cc03a5264a3808b", {
     //   // Accepts CSS selectors that define which elements on the page should be tracked when the page changes
     //   // for example, when a new visual element appears, or the click takes the user to a new page
     // },
-    // networkTracking: {
-    //   captureRules: [{ statusCodeRange: "200-599" }],
-    //   // tracks Fetch/XHR requests capture rules can be specified to broaden or narrow default rules
-    // },
-  },
-});
-
-engagement.init("511911c0366c51e10cc03a5264a3808b");
-await window.engagement.boot({
-  user: {
-    // User Provider: Guides and Surveys requires either user_id or device_id for user identification
-    user_id: "TEST",
-  },
-  integrations: [
-    {
-      track: (event) => {
-        amplitude.track(event.event_type, event.event_properties);
-        // analytics.track(event.event_type, event.event_properties);
-      },
+    networkTracking: {
+      captureRules: [{ statusCodeRange: "200-599" }],
+      // tracks Fetch/XHR requests capture rules can be specified to broaden or narrow default rules
     },
-  ],
+  },
 });
 
-console.log(amplitude);
-console.log(engagement);
-// console.log(amplitude.getInstance());
-
-// const deviceId = amplitude.getInstance().getDeviceId();
-// const userId = amplitude.getInstance().options.userId; // or use your own user ID variable if set
-
-// console.log(userId);
-// console.log(deviceId);
+analytics.ready(() => {
+  analytics.on("track", (event, properties, options) => {
+    window.engagement.forwardEvent({
+      event_type: event,
+      event_properties: properties,
+    });
+  });
+  analytics.on("page", (event, properties, options) => {
+    window.engagement.forwardEvent({
+      event_type: event,
+      event_properties: properties,
+    });
+  });
+});
 
 function MainContainer() {
   const [view, setView] = useState("");
