@@ -6,47 +6,64 @@ import axios from "axios";
 import { AmplitudeBrowser } from "@amplitude/analytics-browser";
 import { plugin as engagementPlugin } from "@amplitude/engagement-browser";
 
-window.amplitude = new AmplitudeBrowser();
-amplitude.add(engagementPlugin());
+// window.amplitude = new AmplitudeBrowser();
+// amplitude.add(engagementPlugin());
 
-await amplitude.init("511911c0366c51e10cc03a5264a3808b", {
-  defaultTracking: false,
-  autocapture: {
-    pageViews: true,
-    attribution: false,
-    formInteractions: false,
-    sessions: false,
-    fileDownloads: false,
-    elementInteractions: true,
-    // {
-    //   cssSelectorAllowlist: [
-    //     "a",
-    //     "button",
-    //     "input",
-    //     "select",
-    //     "textarea",
-    //     "label",
-    //     "video",
-    //     "audio",
-    //     '[contenteditable="true" i]',
-    //     "[data-amp-default-track]",
-    //     ".amp-default-track",
-    //   ],
-    //   // by default, the above selectors are in the allow list
-    //   // When you use 'cssSelectorAllowlist', to target specific elements, set 'actionClickAllowlist'
-    //   // to ensure Amplitude tracks interactions with non-standard clickable elements during page transitions or DOM updates
-    //   actionClickAllowlist: ["div", "span", "h1", "h2", "h3", "h4", "h5", "h6"], // default settings
-    //   // Accepts CSS selectors that define which elements on the page should be tracked when the page changes
-    //   // for example, when a new visual element appears, or the click takes the user to a new page
-    // },
-    networkTracking: {
-      captureRules: [{ statusCodeRange: "200-599" }],
-      // tracks Fetch/XHR requests capture rules can be specified to broaden or narrow default rules
-    },
-  },
-});
+// await amplitude.init("511911c0366c51e10cc03a5264a3808b", {
+//   defaultTracking: false,
+//   autocapture: {
+//     pageViews: true,
+//     attribution: false,
+//     formInteractions: false,
+//     sessions: false,
+//     fileDownloads: false,
+//     elementInteractions: true,
+//     // {
+//     //   cssSelectorAllowlist: [
+//     //     "a",
+//     //     "button",
+//     //     "input",
+//     //     "select",
+//     //     "textarea",
+//     //     "label",
+//     //     "video",
+//     //     "audio",
+//     //     '[contenteditable="true" i]',
+//     //     "[data-amp-default-track]",
+//     //     ".amp-default-track",
+//     //   ],
+//     //   // by default, the above selectors are in the allow list
+//     //   // When you use 'cssSelectorAllowlist', to target specific elements, set 'actionClickAllowlist'
+//     //   // to ensure Amplitude tracks interactions with non-standard clickable elements during page transitions or DOM updates
+//     //   actionClickAllowlist: ["div", "span", "h1", "h2", "h3", "h4", "h5", "h6"], // default settings
+//     //   // Accepts CSS selectors that define which elements on the page should be tracked when the page changes
+//     //   // for example, when a new visual element appears, or the click takes the user to a new page
+//     // },
+//     networkTracking: {
+//       captureRules: [{ statusCodeRange: "200-599" }],
+//       // tracks Fetch/XHR requests capture rules can be specified to broaden or narrow default rules
+//     },
+//   },
+// });
 
 analytics.ready(() => {
+  window.engagement.boot({
+    user: {
+      // User Provider: Guides and Surveys requires either user_id or device_id for user identification
+      user_id: analytics.user().id(),
+      device_id: analytics.user().anonymousId(),
+      user_properties: {},
+    },
+    integrations: [
+      {
+        // Tracking Provider: Pass Guides and Surveys events to the 3rd party analytics provier
+        track: (event) => {
+          analytics.track(event.event_type, event.event_properties);
+        },
+      },
+    ],
+  });
+  // (Optional) Forward events from segment to do event-based triggers for Guides and Surveys. These events aren't sent to the server
   analytics.on("track", (event, properties, options) => {
     window.engagement.forwardEvent({
       event_type: event,
