@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@amplitude/analytics-browser": "^2.24.2",
+    "@amplitude/engagement-browser": "^1.0.5",
     "@babel/preset-env": "^7.27.2",
     "@babel/preset-react": "^7.27.1",
     "@emotion/react": "^11.14.0",
