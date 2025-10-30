@@ -3,7 +3,13 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 
-function ToDoCard({ taskTitle, taskOwner, taskDescription, taskStatus }) {
+function ToDoCard({
+  taskTitle,
+  taskOwner,
+  taskDescription,
+  taskStatus,
+  variantValue,
+}) {
   const handleClick = function (clickType) {
     analytics.track(clickType);
   };
@@ -29,6 +35,11 @@ function ToDoCard({ taskTitle, taskOwner, taskDescription, taskStatus }) {
           Personal Information
         </button>
         <button onClick={() => handleClick("Task Deleted")}>Delete</button>
+        {variantValue === "visible" ? (
+          <button onClick={() => handleClick("Experiment Button Clicked")}>
+            Experiment Button
+          </button>
+        ) : null}
       </CardContent>
     </Card>
   );
