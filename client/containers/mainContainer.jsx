@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { AmplitudeBrowser } from "@amplitude/analytics-browser";
 import { plugin as engagementPlugin } from "@amplitude/engagement-browser";
+import { Experiment } from "@amplitude/experiment-js-client";
 
 window.amplitude = new AmplitudeBrowser();
 amplitude.add(engagementPlugin());
@@ -46,20 +47,13 @@ await amplitude.init("511911c0366c51e10cc03a5264a3808b", {
   },
 });
 
-analytics.ready(() => {
-  analytics.on("track", (event, properties, options) => {
-    window.engagement.forwardEvent({
-      event_type: event,
-      event_properties: properties,
-    });
-  });
-  analytics.on("page", (event, properties, options) => {
-    window.engagement.forwardEvent({
-      event_type: event,
-      event_properties: properties,
-    });
-  });
-});
+const experiment = Experiment.initializeWithAmplitudeAnalytics(
+  "client-TG1laGEVQ6ESxIBi0NHo9emqhMmufueg"
+);
+
+await experiment.fetch();
+
+const variant = experiment.variant("experimental-button");
 
 function MainContainer() {
   const [view, setView] = useState("");
@@ -112,7 +106,7 @@ function MainContainer() {
       />
       <div id="main-container">
         <br />
-        <ToDoCard />
+        <ToDoCard variantValue={variant.value} />
       </div>
     </>
   );
