@@ -34,7 +34,9 @@ function ToDoCard({
         >
           Personal Information
         </button>
-        <button onClick={() => handleClick("Task Deleted")}>Delete</button>
+        <button id="delete-button" onClick={() => handleClick("Task Deleted")}>
+          Delete
+        </button>
         {variantValue === "visible" ? (
           <button onClick={() => handleClick("Experiment Button Clicked")}>
             Experiment Button
