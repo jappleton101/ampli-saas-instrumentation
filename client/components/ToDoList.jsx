@@ -39,7 +39,7 @@ function ToDoCard({
           Delete
         </button>
         {variantValue === "visible" ? (
-          <button onClick={() => handleClick("Experimet Button Clicked")}>
+          <button onClick={() => handleClick("Experiment Button Clicked")}>
             Experiment Button
           </button>
         ) : null}

@@ -25,13 +25,15 @@ amplitude.init("511911c0366c51e10cc03a5264a3808b", {
   },
 });
 
+let variant;
+
 const experiment = Experiment.initializeWithAmplitudeAnalytics(
   "client-TG1laGEVQ6ESxIBi0NHo9emqhMmufueg"
 );
 
 await experiment.fetch();
 
-const variant = experiment.variant("experimental-button");
+variant = experiment.variant("experimental-button");
 
 function MainContainer() {
   const [view, setView] = useState("");
