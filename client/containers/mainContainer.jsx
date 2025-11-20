@@ -7,7 +7,9 @@ import { Experiment } from "@amplitude/experiment-js-client";
 
 let variant;
 
+// wrapper to ensure AMplitude SDKs are initialized after Segment has initialized
 await analytics.ready(() => {
+  // Amplitude Guides & Surveys SDK Boot
   window.engagement.boot({
     user: {
       // User Provider: Guides and Surveys requires either user_id or device_id for user identification
@@ -25,27 +27,36 @@ await analytics.ready(() => {
     ],
   });
 
-  const experiment = Experiment.initialize(
-    "client-TG1laGEVQ6ESxIBi0NHo9emqhMmufueg",
-    {
-      exposureTrackingProvider: {
-        track: (exposure) => {
-          analytics.track("$exposure", exposure);
-        },
+  // Amplitude Experiment SDK Boot
+  const experiment = Experiment.initialize("DEPLOYMENT_KEY", {
+    exposureTrackingProvider: {
+      track: (exposure) => {
+        analytics.track("$exposure", exposure); // tracking provider with Segment, replace with 3rd party tool of your choice
       },
-    }
-  );
+    },
+    userProvider: {
+      getUser: () => {
+        const user_id = analytics.user().id();
+        const device_id = analytics.user().anonymousId();
+        if (user_id !== null) {
+          return {
+            user_id: user_id,
+            device_id: device_id,
+          };
+        } else {
+          return { device_id: device_id };
+        }
+      },
+    },
+  });
 
-  const user = {
-    user_id: analytics.user().id(),
-    device_id: analytics.user().anonymousId(),
-  };
+  experiment.fetch();
 
-  experiment.fetch(user);
+  // This triggers the Exposure Event. Logic to display the feature itself is in ToDoList.jsx
+  // variant must be passed a valid flag key to retrieve the associated variant
+  variant = experiment.variant("FLAG_KEY");
 
-  variant = experiment.variant("experimental-button");
-
-  // Forward events from segment to do event-based triggers for Guides and Surveys.
+  // Guides & Surveys Tracking provider
   analytics.on("track", (event, properties, options) => {
     window.engagement.forwardEvent({
       event_type: event,
