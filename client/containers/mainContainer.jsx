@@ -111,7 +111,7 @@ function MainContainer() {
       />
       <div id="main-container">
         <br />
-        <ToDoCard variantValue={variant.value} />
+        <ToDoCard variantValue={variant ? variant.value : null} />
       </div>
     </>
   );
