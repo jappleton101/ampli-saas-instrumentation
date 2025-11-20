@@ -10,6 +10,7 @@ import { Experiment } from "@amplitude/experiment-js-client";
 window.amplitude = new AmplitudeBrowser();
 amplitude.add(engagementPlugin());
 
+// your Amplitude API Key
 amplitude.init("511911c0366c51e10cc03a5264a3808b", {
   defaultTracking: false,
   autocapture: {
@@ -27,12 +28,15 @@ amplitude.init("511911c0366c51e10cc03a5264a3808b", {
 
 let variant;
 
+// This must be a deployment key that is in your amplitude instance and associated with the project of the API key used above
 const experiment = Experiment.initializeWithAmplitudeAnalytics(
   "client-TG1laGEVQ6ESxIBi0NHo9emqhMmufueg"
 );
 
 await experiment.fetch();
 
+// This must be a flag key associated with an experiment in your Amplitude Instance
+// the actual feature display logic is in the ToDoList Component
 variant = experiment.variant("experimental-button");
 
 function MainContainer() {
