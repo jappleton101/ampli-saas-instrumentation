@@ -11,7 +11,7 @@ window.amplitude = new AmplitudeBrowser();
 amplitude.add(engagementPlugin());
 
 // your Amplitude API Key
-amplitude.init("API_KEY", {
+amplitude.init("511911c0366c51e10cc03a5264a3808b", {
   defaultTracking: false,
   autocapture: {
     pageViews: true,
@@ -29,14 +29,17 @@ amplitude.init("API_KEY", {
 let variant;
 
 // This must be a deployment key that is in your amplitude instance and associated with the project of the API key used above
-const experiment =
-  Experiment.initializeWithAmplitudeAnalytics("DEPLOYMENT_KEY");
+const experiment = Experiment.initializeWithAmplitudeAnalytics(
+  "client-TG1laGEVQ6ESxIBi0NHo9emqhMmufueg"
+);
 
-await experiment.fetch();
+// await experiment.fetch(); // retrieves flags and variants for a user
 
 // This must be a flag key associated with an experiment in your Amplitude Instance
 // the actual feature display logic is in the ToDoList Component
-variant = experiment.variant("FLAG_KEY");
+variant = experiment.variant("experimental-button"); // retrieves variant, fires exposure event
+
+variant.value; // returns the flag value for the feature flag/experiment
 
 function MainContainer() {
   const [view, setView] = useState("");
