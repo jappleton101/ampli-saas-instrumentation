@@ -89,6 +89,7 @@ function MainContainer() {
         id="responsive-navbar"
         currentView={view}
         handleSessionAction={handleSessionAction}
+        amplitude={amplitude}
       />
       <div id="main-container">
         <br />

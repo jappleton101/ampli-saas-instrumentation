@@ -20,7 +20,12 @@ let pagesObject;
 const loggedIn = ["Logout"];
 const loggedOut = ["Login", "Sign Up"];
 
-function ResponsiveAppBar({ setViewHandler, isLoggedIn, handleSessionAction }) {
+function ResponsiveAppBar({
+  setViewHandler,
+  isLoggedIn,
+  handleSessionAction,
+  amplitude,
+}) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [loginError, setLoginError] = React.useState("");
@@ -68,7 +73,7 @@ function ResponsiveAppBar({ setViewHandler, isLoggedIn, handleSessionAction }) {
         username: username,
         password: password,
       });
-      console.log("try login response", response);
+      amplitude.setUserId(response.data.userUuid);
       handleSessionAction("login");
     } catch (error) {
       setLoginError(error.response.data.err);
@@ -83,6 +88,7 @@ function ResponsiveAppBar({ setViewHandler, isLoggedIn, handleSessionAction }) {
         firstName: firstName,
         lastName: lastName,
       });
+      amplitude.setUserId(response.data.userUuid);
       setSignupSuccess("User Successfully Created");
     } catch (error) {
       setSignupError(error.response.data.err);

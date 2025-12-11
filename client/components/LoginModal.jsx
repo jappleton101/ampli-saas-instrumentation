@@ -38,9 +38,6 @@ export default function LoginModal({ handleModalButtonClick, loginError }) {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Login
           </Typography>
-          <Typography variant="body1">
-            Log in to view saved rides and save new rides.
-          </Typography>
           <br />
           <TextField
             id="outlined"
