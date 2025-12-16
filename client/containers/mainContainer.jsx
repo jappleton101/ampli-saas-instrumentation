@@ -122,6 +122,7 @@ function MainContainer() {
         id="responsive-navbar"
         currentView={view}
         handleSessionAction={handleSessionAction}
+        analytics={analytics}
       />
       <div id="main-container">
         <br />
