@@ -34,8 +34,6 @@ function MainContainer() {
     }
   }
 
-  async function getUserTasks() {}
-
   useEffect(() => {
     getSession().then((data) => {
       if (data && data.data.sessionData) {
