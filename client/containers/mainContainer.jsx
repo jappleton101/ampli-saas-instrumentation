@@ -1,5 +1,6 @@
 import * as React from "react";
 import axios from "axios";
+import MainComponent from "../components/mainComponent";
 import { AmplitudeBrowser } from "@amplitude/analytics-browser";
 import { plugin as engagementPlugin } from "@amplitude/engagement-browser";
 import { Experiment } from "@amplitude/experiment-js-client";
@@ -37,7 +38,7 @@ variant.value;
 function MainContainer() {
   return (
     <>
-      <h1>PLACEHOLDER</h1>
+      <MainComponent />
     </>
   );
 }
