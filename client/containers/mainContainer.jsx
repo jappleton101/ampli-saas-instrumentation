@@ -7,7 +7,7 @@ import { Experiment } from "@amplitude/experiment-js-client";
 window.amplitude = new AmplitudeBrowser();
 amplitude.add(engagementPlugin());
 
-amplitude.init("511911c0366c51e10cc03a5264a3808b", {
+amplitude.init("PROJECT_API_KEY", {
   defaultTracking: false,
   autocapture: {
     pageViews: true,
@@ -25,12 +25,12 @@ amplitude.init("511911c0366c51e10cc03a5264a3808b", {
 let variant;
 
 const experiment = Experiment.initializeWithAmplitudeAnalytics(
-  "client-TG1laGEVQ6ESxIBi0NHo9emqhMmufueg",
+  "EXPERIMENT_DEPLOYMENT_KEY",
 );
 
 await experiment.fetch();
 
-variant = experiment.variant("experimental-button");
+variant = experiment.variant("EXPERIMENT_FLAG");
 
 variant.value;
 
