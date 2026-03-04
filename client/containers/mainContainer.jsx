@@ -1,44 +1,28 @@
 import * as React from "react";
+import { useState } from "react";
 import axios from "axios";
-import MainComponent from "../components/mainComponent";
-import { AmplitudeBrowser } from "@amplitude/analytics-browser";
-import { plugin as engagementPlugin } from "@amplitude/engagement-browser";
-import { Experiment } from "@amplitude/experiment-js-client";
+import MainComponent from "../components/mainComponent.jsx";
+import ExperimentalComponent from "../components/experimentalComponent.jsx";
+import LoginPage from "../components/loginComponent.jsx";
 
-window.amplitude = new AmplitudeBrowser();
-amplitude.add(engagementPlugin());
+function MainContainer({ variant }) {
+  const [currentView, setCurrentView] = useState();
 
-amplitude.init("PROJECT_API_KEY", {
-  defaultTracking: false,
-  autocapture: {
-    pageViews: true,
-    attribution: true,
-    formInteractions: true,
-    sessions: true,
-    fileDownloads: true,
-    elementInteractions: true,
-    networkTracking: {
-      captureRules: [{ statusCodeRange: "200-599" }],
-    },
-  },
-});
+  if (currentView === "login") {
+    return (
+      <>
+        <LoginPage />
+      </>
+    );
+  }
 
-let variant;
-
-const experiment = Experiment.initializeWithAmplitudeAnalytics(
-  "EXPERIMENT_DEPLOYMENT_KEY",
-);
-
-await experiment.fetch();
-
-variant = experiment.variant("EXPERIMENT_FLAG");
-
-variant.value;
-
-function MainContainer() {
   return (
     <>
-      <MainComponent />
+      {variant === "control" ? (
+        <MainComponent setCurrentView={setCurrentView} />
+      ) : (
+        <ExperimentalComponent setCurrentView={setCurrentView} />
+      )}
     </>
   );
 }
