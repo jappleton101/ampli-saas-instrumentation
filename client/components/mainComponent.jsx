@@ -262,7 +262,7 @@ function QuestradeLogo() {
   );
 }
 
-function MainComponent({ setCurrentView }) {
+function MainComponent({ variant }) {
   const [hoveredNav, setHoveredNav] = useState(null);
 
   return (
@@ -316,7 +316,6 @@ function MainComponent({ setCurrentView }) {
             Log in
           </a>
           <a
-            onClick={() => setCurrentView("login")}
             href="#"
             style={{
               background: GREEN,
@@ -328,7 +327,9 @@ function MainComponent({ setCurrentView }) {
               fontWeight: 700,
             }}
           >
-            Open an account
+            {variant === "known-users"
+              ? "Try Questrade Plus for Free"
+              : "Open an Account"}
           </a>
         </div>
       </div>
