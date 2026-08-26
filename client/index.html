@@ -14,13 +14,15 @@
     <!-- <script>amplitude.add(window.engagement.plugin())</script> -->
     <!-- <script src="https://cdn.amplitude.com/script/511911c0366c51e10cc03a5264a3808b.js"></script> -->
     <script>
-      window.amplitude.add(window.sessionReplay.plugin({sampleRate: 1}));
-      window.amplitude.init('511911c0366c51e10cc03a5264a3808b', 
-        {
-          "defaultTracking": false,
-          "fetchRemoteConfig":true
-        }
-      );
+      if (new URLSearchParams(location.search).get('embed') === '1') {
+        window.amplitude.add(window.sessionReplay.plugin({sampleRate: 1}));
+        window.amplitude.init('511911c0366c51e10cc03a5264a3808b',
+          {
+            "defaultTracking": false,
+            "fetchRemoteConfig":true
+          }
+        );
+      }
     </script>
   </body>
 </html>
