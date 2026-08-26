@@ -1,6 +1,5 @@
 import * as React from "react";
 import ResponsiveAppBar from "../components/NavBar.jsx";
-import ToDoCard from "../components/ToDoList.jsx";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
@@ -53,7 +52,12 @@ function MainContainer() {
       />
       <div id="main-container">
         <br />
-        <ToDoCard />
+        <iframe
+          src="/?embed=1"
+          title="ToDoList embed"
+          width="100%"
+          height="400"
+        />
       </div>
     </>
   );
