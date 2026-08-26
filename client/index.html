@@ -7,21 +7,34 @@
   <body> 
     <div id="root"></div>
     <script src="index.js"></script>
-    <script src="https://cdn.amplitude.com/libs/analytics-browser-2.34.0-min.js.gz"></script> 
-    <script type="text/javascript" src="https://cdn.amplitude.com/script/511911c0366c51e10cc03a5264a3808b.experiment.js"></script>
-    <script src="https://cdn.amplitude.com/libs/plugin-session-replay-browser-1.22.7-min.js.gz"></script>
     <!-- <script src="https://cdn.amplitude.com/script/511911c0366c51e10cc03a5264a3808b.engagement.js"></script> -->
     <!-- <script>amplitude.add(window.engagement.plugin())</script> -->
     <!-- <script src="https://cdn.amplitude.com/script/511911c0366c51e10cc03a5264a3808b.js"></script> -->
     <script>
       if (new URLSearchParams(location.search).get('embed') === '1') {
-        window.amplitude.add(window.sessionReplay.plugin({sampleRate: 1}));
-        window.amplitude.init('511911c0366c51e10cc03a5264a3808b',
-          {
-            "defaultTracking": false,
-            "fetchRemoteConfig":true
+        const amplitudeScripts = [
+          'https://cdn.amplitude.com/libs/analytics-browser-2.34.0-min.js.gz',
+          'https://cdn.amplitude.com/script/511911c0366c51e10cc03a5264a3808b.experiment.js',
+          'https://cdn.amplitude.com/libs/plugin-session-replay-browser-1.22.7-min.js.gz',
+        ];
+
+        const loadAmplitudeScript = (index) => {
+          if (index === amplitudeScripts.length) {
+            window.amplitude.add(window.sessionReplay.plugin({ sampleRate: 1 }));
+            window.amplitude.init('511911c0366c51e10cc03a5264a3808b', {
+              defaultTracking: false,
+              fetchRemoteConfig: true,
+            });
+            return;
           }
-        );
+
+          const script = document.createElement('script');
+          script.src = amplitudeScripts[index];
+          script.onload = () => loadAmplitudeScript(index + 1);
+          document.body.appendChild(script);
+        };
+
+        loadAmplitudeScript(0);
       }
     </script>
   </body>
