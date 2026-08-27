@@ -67,7 +67,9 @@ export default function LoginModal({ handleModalButtonClick, loginError }) {
             <Button
               variant="contained"
               onClick={() =>
-                handleModalButtonClick(username, password, null, "login")
+                window.amplitude.track("login_button_clicked", {
+                  username: username,
+                })
               }
             >
               Login

@@ -6,35 +6,90 @@
   </head>
   <body> 
     <div id="root"></div>
-    <script src="index.js"></script>
-    <!-- <script src="https://cdn.amplitude.com/script/511911c0366c51e10cc03a5264a3808b.engagement.js"></script> -->
-    <!-- <script>amplitude.add(window.engagement.plugin())</script> -->
-    <!-- <script src="https://cdn.amplitude.com/script/511911c0366c51e10cc03a5264a3808b.js"></script> -->
     <script>
+      // Inside the iFrame
       if (new URLSearchParams(location.search).get('embed') === '1') {
-        const amplitudeScripts = [
+
+        const iframeScripts = [
           'https://cdn.amplitude.com/libs/analytics-browser-2.34.0-min.js.gz',
-          'https://cdn.amplitude.com/script/511911c0366c51e10cc03a5264a3808b.experiment.js',
-          'https://cdn.amplitude.com/libs/plugin-session-replay-browser-1.22.7-min.js.gz',
+          'https://cdn.amplitude.com/script/511911c0366c51e10cc03a5264a3808b.engagement.js',
         ];
 
+        const parentWindowScripts = [
+          'https://cdn.amplitude.com/libs/analytics-browser-2.34.0-min.js.gz',
+          'https://cdn.amplitude.com/libs/plugin-session-replay-browser-1.22.7-min.js.gz',
+          'https://cdn.amplitude.com/script/511911c0366c51e10cc03a5264a3808b.engagement.js',
+        ];
+
+        let deviceId;
+        let sessionId;
+
         const loadAmplitudeScript = (index) => {
-          if (index === amplitudeScripts.length) {
-            window.amplitude.add(window.sessionReplay.plugin({ sampleRate: 1 }));
-            window.amplitude.init('511911c0366c51e10cc03a5264a3808b', {
-              defaultTracking: false,
-              fetchRemoteConfig: true,
+          function loadScript(src) {
+            return new Promise((resolve, reject) => {
+              const script = document.createElement('script');
+              script.src = src;
+              script.onload = resolve;
+              script.onerror = () => reject(new Error(`Failed to load ${src}`));
+              document.head.appendChild(script);
             });
-            return;
           }
 
-          const script = document.createElement('script');
-          script.src = amplitudeScripts[index];
-          script.onload = () => loadAmplitudeScript(index + 1);
-          document.body.appendChild(script);
+          (async () => {
+            for (const src of iframeScripts) {
+              await loadScript(src);
+            }
+            window.amplitude.add(window.engagement.plugin());
+            await window.amplitude.init('511911c0366c51e10cc03a5264a3808b', {
+              fetchRemoteConfig: false,
+              autocapture: true,
+            }).promise;
+
+            deviceId = window.amplitude.getDeviceId();
+            sessionId = window.amplitude.getSessionId();
+          })();
         };
 
         loadAmplitudeScript(0);
+
+        const injectAmplitudeToParentWindow = (index, deviceId, sessionId) => {
+          function loadScript(src) {
+            return new Promise((resolve, reject) => {
+              const script = window.top.document.createElement('script');
+              script.src = src;
+              script.onload = resolve;
+              script.onerror = () => reject(new Error(`Failed to load ${src}`));
+              window.top.document.head.appendChild(script);
+            });
+          }
+
+          (async () => {
+          for (const src of parentWindowScripts) {
+            await loadScript(src);
+          }
+
+          const sessionReplayTracking = window.top.sessionReplay.plugin({sampleRate: 1});
+
+          window.top.amplitude.add(sessionReplayTracking);
+          window.top.amplitude.add(window.top.engagement.plugin());
+          window.top.amplitude.init('511911c0366c51e10cc03a5264a3808b', {
+            fetchRemoteConfig: false,
+            autocapture: {
+              elementInteractions: true,
+              pageViews: false,
+              scroll: false,
+              formInteractions: false,
+              formSubmissions: false,
+              formSubmissions: false,
+            },
+            deviceId: deviceId,
+            sessionId: sessionId,
+          });
+        })();
+        };
+
+        injectAmplitudeToParentWindow(0, deviceId, sessionId);
+
       }
     </script>
   </body>
