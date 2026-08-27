@@ -12,13 +12,13 @@
 
         const iframeScripts = [
           'https://cdn.amplitude.com/libs/analytics-browser-2.34.0-min.js.gz',
-          'https://cdn.amplitude.com/script/511911c0366c51e10cc03a5264a3808b.engagement.js',
+          'https://cdn.amplitude.com/script/API_KEY.engagement.js',
         ];
 
         const parentWindowScripts = [
           'https://cdn.amplitude.com/libs/analytics-browser-2.34.0-min.js.gz',
           'https://cdn.amplitude.com/libs/plugin-session-replay-browser-1.22.7-min.js.gz',
-          'https://cdn.amplitude.com/script/511911c0366c51e10cc03a5264a3808b.engagement.js',
+          'https://cdn.amplitude.com/script/API_KEY.engagement.js',
         ];
 
         let deviceId;
@@ -40,7 +40,7 @@
               await loadScript(src);
             }
             window.amplitude.add(window.engagement.plugin());
-            await window.amplitude.init('511911c0366c51e10cc03a5264a3808b', {
+            await window.amplitude.init('API_KEY', {
               fetchRemoteConfig: false,
               autocapture: true,
             }).promise;
@@ -72,7 +72,7 @@
 
           window.top.amplitude.add(sessionReplayTracking);
           window.top.amplitude.add(window.top.engagement.plugin());
-          window.top.amplitude.init('511911c0366c51e10cc03a5264a3808b', {
+          window.top.amplitude.init('API_KEY', {
             fetchRemoteConfig: false,
             autocapture: {
               elementInteractions: true,
