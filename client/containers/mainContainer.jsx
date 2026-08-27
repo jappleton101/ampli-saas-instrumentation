@@ -1,13 +1,11 @@
 import * as React from "react";
 import ResponsiveAppBar from "../components/NavBar.jsx";
-import ToDoCard from "../components/ToDoList.jsx";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
 function MainContainer() {
   const [view, setView] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  analytics.page("Home Page"); // Segment Page Viewed Event
 
   async function handleSessionAction(action) {
     if (action === "logout") {
@@ -35,8 +33,6 @@ function MainContainer() {
     }
   }
 
-  async function getUserTasks() {}
-
   useEffect(() => {
     getSession().then((data) => {
       if (data && data.data.sessionData) {
@@ -56,7 +52,12 @@ function MainContainer() {
       />
       <div id="main-container">
         <br />
-        <ToDoCard />
+        <iframe
+          src="/?embed=1"
+          title="ToDoList embed"
+          width="100%"
+          height="400"
+        />
       </div>
     </>
   );
